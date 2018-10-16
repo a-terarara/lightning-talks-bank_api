@@ -1,0 +1,144 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title 銀行APIを作ったり使ったりしてみた
+
+    link(rel='stylesheet', type='text/css', href='build/build.css')
+    link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.6/css/all.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css')
+
+  body
+
+    article.deck
+
+      section
+        h2 銀行APIを作る！使う！
+        h4 2018/10/20
+
+      section
+        h2 自己紹介
+        ul.build.build-items
+          li <h2>名前：寺原　歩</h2>
+          li 仕事：<a href="https://www.is-tech.co.jp/">(株)IST<image src="images/ist_logo.png" /></a><br/>技術戦略推進部の平社員<br/><br/>
+          li <h3>最近こんなアイコン使ってます<br /><image src="images/27805556.png" height="150" width="150"/></h3><br/>GitHub: a-terarara
+
+      section
+        h1 銀行APIって？
+
+      section
+        h4 改正銀行法の施行に伴い、電子決済等代行業を行う者に対する登録制の導入等・銀行代理業等に係る規制緩和・銀行代理業該当性の明確化・その他、政府令等において所要の改正等を行う
+        h4 (1) 電子決済等代行業を行う者に対する登録制の導入等 ・電子決済等代行業に該当しない行為として、預金者による特定の者に対する定期的な支払を目的として行う行為等を規定する。 ・決済指図の内容のみの伝達のうち、電子決済等代行業に該当する伝達方法として、預金者の仕様する電子機器の映像面に、銀行等に対する決済指図を行うための画像を銀行等に表示させることを目的として、送金先及び金額に係る情報を銀行等に対して伝達する方法を規定する。 ・電子決済等代行業者の登録要件として、純資産額が負の値でないことを規定する。 ・電子決済等代行業者の登録申請時の留意事項等を策定する。 
+        h4 (2) 銀行代理業等に係る規制緩和 ・増改築等のやむを得ない理由による営業所の所在地の位置変更で、元の位置に戻ることが明らかな場合の変更届け出を不要とする。 ・銀行代理業等の参入要件のうち、法令等遵守のための統括部署及び実務経験者の配置について要件を緩和する。
+        h4 (3) 銀行代理業該当性の明確化 ・電子決済等代行業制度の創設等を踏まえ、電子決済等代行業と銀行代理業との関係等を明確化するため、「銀行法等に関する留意事項について（銀行法等ガイドライン）」を策定する。
+
+      section
+        h1 なるほどわからん
+        <image src="images/warui.jpg" />
+
+      section
+        h1 要約すると
+        h3 インターネットバンキングの機能を代理業者（電子決済等代行業者）に使ってもらうためにオープンなAPIとして提供するもの
+        h3 スクレイパーから口座保有者を守るための仕組み
+
+      section
+        h1 今日やること<br/><br/>
+        ul.build.build-items
+          li <h2>1. 銀行と電代業について　　</h2>
+          li <h2>2. 実際に作ってみた　　　　</h2>
+          li <h2>3. DEMO(WEBアプリ)　　　</h2>
+
+      section
+        h1 銀行側の考え
+        ul.build.build-items
+          li <h3>今までクローズドだったシステムをオープン化するって<font color="red">セキュリティ</font>大丈夫なのか？</h3>
+          li <h2>オープン化する費用に充てる<font color="red">収益</font>はどう取るべきか？</h2>
+          li <h2><font color="red">リスクが高い</font>ので他の銀行さんの様子を見ようかな？</h2>
+
+      section
+        h1 ネガティブ
+
+      section
+        h1 電代業側の考え
+        ul.build.build-items
+          li <h2>銀行業をやらずに<font color="red">新規ビジネス化</font>出来るなんてHappy!</h2>
+          li <h2>銀行側も<font color="red">手数料分配</font>するからWin-Win！</h2>
+          li <h3>他を出し抜きたいので早くやりたい！</h3>
+        
+      section 
+        h1 超ポジティブ
+
+      section
+        h1 当然<br/>ソリが合わない
+
+      section
+        h2 代表的なシステム構成
+        h3 銀行：リソースサーバ・認可サーバ
+        h3 電代業：サーバ・アプリ
+        h3 <image src="/images/bank_diagram.png" height="240px" width="600px"/>
+
+      section
+        h2 今回の開発コンセプト
+        h3 無料
+        h3 Serverless
+        h3 利用シーンを想像できるモックアップ
+
+      section
+        h2 銀行APIを作ってみよう
+        h3 APISpecを決める
+        h3 リソースサーバを作る
+        h3 認可機能を作る
+
+      section
+        h2 APISpecを決める
+        h2 <a href="https://editor.swagger.io" target="_blank">{{Lets go Swagger}}</a>
+
+      section
+        h2 リソースサーバ生成
+        h3 <a href="https://console.firebase.google.com/u/1/project/mock-api-for-terarara-bank/functions/list?hl=ja" target="_blank"><image src="/images/firebase_icon.jpg" height="50px" width="50px" /></a> <a href="https://github.com/a-terarara/mock-api-for-terarara-bank" target="_blank">firebaseを使ったFaaS(Function as a Service)</a>
+
+      section
+        h2 <s>認可サーバ生成</s>
+        h3 今回は割愛して認可している風画面を出します。
+        
+      section
+        h2 モック化して放流中・・・
+        h3 <u>https://us-central1-mock-api-for-terarara-bank.cloudfunctions.net</u>
+        h3 /accounts&nbsp;　　　　　　　　　　　　
+        h3 /transactions　　　　　　　　　　　
+        h3 /transfer　　　　　　　　　　　　　
+
+      section
+        h2 電代業アプリを作ってみよう
+        h3 フロントアプリを作る
+        h3 サーバを作る
+
+      section
+        h2 フロントアプリを作る
+        h3 React.js + material-ui
+        h3 webホスティングはGithub Pages
+
+      section
+        h2 <s>サーバ生成</s>
+        h3 認可割愛したのでこれも自然と割愛
+
+      section
+        h2 今回の開発範囲
+        // 画像
+        // githubなどわかりやすく
+        
+      section
+        h2 <a href="https://a-terarara.github.io/transfer-app-to-terarara-bank/" target="_blank">DEMO</a>
+
+      section
+        h2 実際は・・・
+        ul.build.build-items
+          li <h3>銀行システムは<font color="red">高可用性命</font>なのでFaaSでは厳しい！</h3>
+          li <h3>電代業システムは<font color="red">複数の銀行API</font>を使う前提で設計する！</h3>
+          li <h3>認可大事！</h3>
+
+      section
+        h1 以上
+
+    script(src='build/build.js')
